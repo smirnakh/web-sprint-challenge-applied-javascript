@@ -1,4 +1,34 @@
+import axios from "axios"
+
 const Card = (article) => {
+  
+  const divCard = document.createElement('div');
+  const headline = document.createElement('div');
+  const author = document.createElement('div');
+  const imgContainer = document.createElement('div');
+  const authorPhoto = document.createElement('img');
+  const authorName = document.createElement('span');
+
+  divCard.classList.add('card');
+  headline.classList.add('headline');
+  author.classList.add('author');
+  imgContainer.classList.add('img-container');
+
+  headline.textContent = article.headline;
+  authorPhoto.src = article.authorPhoto;
+  authorName.textContent =`By ${article.authorName}`;
+
+  divCard.appendChild(headline);
+  divCard.appendChild(author);
+  author.appendChild(imgContainer);
+  imgContainer.appendChild(authorPhoto);
+  author.appendChild(authorName);
+
+  divCard.addEventListener('click', () =>{
+    console.log(headline);
+   });
+
+   return divCard;
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -19,7 +49,50 @@ const Card = (article) => {
   //
 }
 
-const cardAppender = (selector) => {
+const cardAppender = async (selector) => {
+  
+  fetch('http://localhost:5001/api/articles')
+    .then(resp => resp.json())
+    .then(data => {
+      console.log('fetch response', data);
+    })
+
+  const resp = await fetch('http://localhost:5001/api/articles')
+  const json = await resp.json()
+  console.log('await response', json);
+  const articles = json.articles;
+ 
+
+  articles.javascript.forEach(article => {
+    document.querySelector(selector).appendChild(Card(article));
+  });
+  articles.bootstrap.forEach(article => {
+    document.querySelector(selector).appendChild(Card(article));
+  });
+  articles.technology.forEach(article => {
+    document.querySelector(selector).appendChild(Card(article));
+  });
+  articles.jquery.forEach(article => {
+    document.querySelector(selector).appendChild(Card(article));
+  });
+  articles.node.forEach(article => {
+    document.querySelector(selector).appendChild(Card(article));
+  });
+
+
+  // const cardContainer = document.querySelector(selector);
+
+  // axios.get('http://localhost:5001/api/articles')
+  // .then(res => {
+  //   const data = res.json();
+  //   console.log(data);
+  //    data.forEach( item => {
+  //     console.log(data)
+  //      const articleElem = Tabs(item)
+  //       cardContainer.appendChild(articleElem)
+  //    })
+  // })
+  //  .catch(err => console.error(err))
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
